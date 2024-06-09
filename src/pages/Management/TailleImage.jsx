@@ -1,13 +1,30 @@
 import React, { useState, useEffect } from "react";
-import { Card, styled, Typography, FormControl, Select, MenuItem, InputLabel, Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import {
+  Card,
+  styled,
+  Typography,
+  FormControl,
+  Select,
+  MenuItem,
+  InputLabel,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 //import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { StyledDiv, StyledButton, FrameContainer , FrameText , Frames} from "../../shared/StyledComponents"
-
-
+import "react-toastify/dist/ReactToastify.css";
+import {
+  StyledDiv,
+  StyledButton,
+  FrameContainer,
+  FrameText,
+  Frames,
+} from "../../shared/StyledComponents";
 
 const generatePhotoFrame = (dimensions, onDelete) => {
   const [width, height] = dimensions.split("*");
@@ -39,7 +56,7 @@ const TailleImage = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/taille/getAllTaille"
+          "https://freezbackend-824bd046e21f.herokuapp.com/api/taille/getAllTaille"
         );
         setDataImage(response.data.taille[0].Product);
       } catch (error) {
@@ -66,10 +83,10 @@ const TailleImage = () => {
     setSelectedTailleId(tailleId);
     setOpenDialog(true);
   };
-/*
+  /*
   const handleDeleteConfirm = async () => {
     try {
-      await axios.delete(`http://localhost:5000/api/taille/deleteTaille/${selectedTailleId}`);
+      await axios.delete(`https://freezbackend-824bd046e21f.herokuapp.com/api/taille/deleteTaille/${selectedTailleId}`);
       setOpenDialog(false);
       // Refresh data after deletion
       fetchData();
@@ -90,7 +107,7 @@ const TailleImage = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/taille/getAllTaille"
+        "https://freezbackend-824bd046e21f.herokuapp.com/api/taille/getAllTaille"
       );
       setDataImage(response.data.taille[0].Product);
     } catch (error) {
@@ -129,8 +146,10 @@ const TailleImage = () => {
         {filteredData.map((city) => (
           <div key={city._id} mb={5}>
             {city.types.map((type) => (
-              <Frames key={type._id} >
-                {generatePhotoFrame(type.Taille, () => handleDeleteClick(type._id))}
+              <Frames key={type._id}>
+                {generatePhotoFrame(type.Taille, () =>
+                  handleDeleteClick(type._id)
+                )}
               </Frames>
             ))}
           </div>

@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Button, Card, CardContent, Typography, Box } from "@mui/material";
-import axios from "axios"; 
+import axios from "axios";
 import { useSelector } from "react-redux";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const UploadPic = () => {
   const navigate = useNavigate();
@@ -24,18 +24,25 @@ const UploadPic = () => {
         setUserPhoto(e.target.result);
 
         try {
-          await axios.put(`http://localhost:5000/api/admin/uploadImage/${userId}`, {
-            photo: e.target.result, 
-          });
-          const response = await axios.get(`http://localhost:5000/api/admin/getOne/${userId}`);
+          await axios.put(
+            `https://freezbackend-824bd046e21f.herokuapp.com/api/admin/uploadImage/${userId}`,
+            {
+              photo: e.target.result,
+            }
+          );
+          const response = await axios.get(
+            `https://freezbackend-824bd046e21f.herokuapp.com/api/admin/getOne/${userId}`
+          );
           setUserData(response.data);
-
         } catch (error) {
-          console.error("Erreur lors de la mise à jour de la photo de profil :", error);
+          console.error(
+            "Erreur lors de la mise à jour de la photo de profil :",
+            error
+          );
         }
       };
       reader.readAsDataURL(file);
-    }  else {
+    } else {
       console.error("La taille du fichier est trop importante.");
     }
   };
@@ -47,28 +54,32 @@ const UploadPic = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `https://freezbackend-824bd046e21f.herokuapp.com/api/admin/getOne/${userId}`
+        );
 
-    try {
-      const response = await axios.get(`http://localhost:5000/api/admin/getOne/${userId}`);
-
-      console.log( "////////// upload pic photo ////////// " ,  response.data.photo)
+        console.log(
+          "////////// upload pic photo ////////// ",
+          response.data.photo
+        );
 
         setUserPhoto(response.data.photo);
-        setUserData(response.data); 
-
-      }catch (error) {
-        console.error("Erreur lors de la récupération des données utilisateur :", error);
+        setUserData(response.data);
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des données utilisateur :",
+          error
+        );
       }
-    }
+    };
 
     if (isAuthenticated) {
       fetchData();
     } else if (isAuthenticated === false) {
-      navigate('/Signin');
+      navigate("/Signin");
     }
-
-
-  }, [isAuthenticated, navigate, userId]); 
+  }, [isAuthenticated, navigate, userId]);
 
   return (
     <Card

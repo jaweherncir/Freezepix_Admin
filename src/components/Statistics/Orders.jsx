@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Title, StyledText } from "../../shared/StyledComponents";
 
 const Orders = () => {
@@ -12,14 +12,16 @@ const Orders = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/panier/GetAllDataPanier")
+        const response = await axios.get(
+          "https://freezbackend-824bd046e21f.herokuapp.com/api/panier/GetAllDataPanier"
+        );
         setOrders(response.data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
-    }
+    };
     if (!token) {
-      navigate('/Signin');
+      navigate("/Signin");
     } else {
       fetchData();
     }
@@ -30,7 +32,9 @@ const Orders = () => {
   };
   const formatOrderDate = (rawDate) => {
     const date = new Date(rawDate);
-    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+    return `${date.getDate()}/${
+      date.getMonth() + 1
+    }/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
   };
 
   return (
@@ -45,7 +49,7 @@ const Orders = () => {
         <Title>Dernières commandes</Title>
       </div>
 
-      {orders.map(order => (
+      {orders.map((order) => (
         <div
           key={order._id}
           onClick={() => handleOrderClick(order._id)}
@@ -71,7 +75,7 @@ const Orders = () => {
             <StyledText>{order.userId.email}</StyledText>
           </div>
           <div>
-          <StyledText>{formatOrderDate(order.createdAt)}</StyledText>
+            <StyledText>{formatOrderDate(order.createdAt)}</StyledText>
           </div>
           <div>
             <StyledText>${order.prixOfOllOderByUser || 0}</StyledText>

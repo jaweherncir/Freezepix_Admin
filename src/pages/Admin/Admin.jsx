@@ -9,7 +9,14 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { Container , ButtonContainer , StyledButton, StyledSearchTextField, StyledTextField, DataGridContainer } from "../../shared/StyledComponents";
+import {
+  Container,
+  ButtonContainer,
+  StyledButton,
+  StyledSearchTextField,
+  StyledTextField,
+  DataGridContainer,
+} from "../../shared/StyledComponents";
 
 const Admin = () => {
   const [searchText, setSearchText] = useState("");
@@ -20,14 +27,14 @@ const Admin = () => {
   const handleDeleteAdmin = async (adminId) => {
     try {
       await axios.delete(
-        `http://localhost:5000/api/admin/deleteadmin/${adminId}`
+        `https://freezbackend-824bd046e21f.herokuapp.com/api/admin/deleteadmin/${adminId}`
       );
       toast.success("Admin supprimé avec succès!", {
         position: toast.POSITION.TOP_CENTER,
       });
 
       const response = await axios.get(
-        "http://localhost:5000/api/admin/getAll"
+        "https://freezbackend-824bd046e21f.herokuapp.com/api/admin/getAll"
       );
       const adminsWithIds = response.data.map((admin, index) => ({
         ...admin,
@@ -47,18 +54,21 @@ const Admin = () => {
 
   const handleUpdateAdmin = async () => {
     try {
-      await axios.put(`http://localhost:5000/api/admin/${selectedAdmin._id}`, {
-        name: selectedAdmin.name,
-        email: selectedAdmin.email,
-        phone: selectedAdmin.phone,
-      });
+      await axios.put(
+        `https://freezbackend-824bd046e21f.herokuapp.com/api/admin/${selectedAdmin._id}`,
+        {
+          name: selectedAdmin.name,
+          email: selectedAdmin.email,
+          phone: selectedAdmin.phone,
+        }
+      );
 
       toast.success("Admin mis à jour avec succès!", {
         position: toast.POSITION.TOP_CENTER,
       });
 
       const response = await axios.get(
-        "http://localhost:5000/api/admin/getAll"
+        "https://freezbackend-824bd046e21f.herokuapp.com/api/admin/getAll"
       );
       const adminsWithIds = response.data.map((admin, index) => ({
         ...admin,
@@ -120,7 +130,7 @@ const Admin = () => {
     const fetchAdmins = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/admin/getAll"
+          "https://freezbackend-824bd046e21f.herokuapp.com/api/admin/getAll"
         );
         const adminsWithIds = response.data.map((admin, index) => ({
           ...admin,
@@ -160,12 +170,12 @@ const Admin = () => {
     <div>
       <Container>
         <h2>Admin Panel</h2>
-        <ButtonContainer >
+        <ButtonContainer>
           <StyledButton
             variant="contained"
             onClick={handleAddAdminClick}
             type="submit"
-            >
+          >
             Ajouter un Admin
           </StyledButton>
         </ButtonContainer>
@@ -208,16 +218,13 @@ const Admin = () => {
               setSelectedAdmin({ ...selectedAdmin, phone: e.target.value })
             }
           />
-            <StyledButton 
-              onClick={handleUpdateAdmin}
-              variant="contained"
-            >
-              Enregistrer
-            </StyledButton>
+          <StyledButton onClick={handleUpdateAdmin} variant="contained">
+            Enregistrer
+          </StyledButton>
         </div>
       )}
 
-      <DataGridContainer >
+      <DataGridContainer>
         <DataGrid
           rows={filteredAdmins}
           columns={columns}
