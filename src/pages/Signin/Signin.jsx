@@ -1,12 +1,19 @@
 import React, { useState } from "react";
-import { Paper, Typography, TextField, Button, ThemeProvider, createTheme } from "@mui/material";
+import {
+  Paper,
+  Typography,
+  TextField,
+  Button,
+  ThemeProvider,
+  createTheme,
+} from "@mui/material";
 import Black from "../../Assets/logo/Black.png";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from 'react-redux';
-import { setToken , setUser } from "../../Store/AuthSlice";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch } from "react-redux";
+import { setToken, setUser } from "../../Store/AuthSlice";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const theme = createTheme({
   palette: {
@@ -20,7 +27,7 @@ const theme = createTheme({
 });
 
 const Signin = () => {
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -30,13 +37,16 @@ const Signin = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:5000/api/admin/login", {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        "https://freezbackend-824bd046e21f.herokuapp.com/api/admin/login",
+        {
+          email,
+          password,
+        }
+      );
 
       dispatch(setToken(response.data.token));
-      dispatch(setUser(response.data)); 
+      dispatch(setUser(response.data));
       navigate("/home");
     } catch (error) {
       if (error.response) {

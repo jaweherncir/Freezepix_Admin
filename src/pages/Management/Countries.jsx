@@ -1,10 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, IconButton } from '@mui/material';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Typography,
+  IconButton,
+} from "@mui/material";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 
 const Countries = () => {
   const [countries, setCountries] = useState([]);
@@ -16,15 +26,17 @@ const Countries = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/countries');
+        const response = await axios.get(
+          "https://freezbackend-824bd046e21f.herokuapp.com/countries"
+        );
         setCountries(response.data[0].data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
     if (!token) {
-      navigate('/Signin');
+      navigate("/Signin");
     } else {
       fetchData();
     }
@@ -32,7 +44,10 @@ const Countries = () => {
 
   const indexOfLastElement = currentPage * elementsPerPage;
   const indexOfFirstElement = indexOfLastElement - elementsPerPage;
-  const currentElements = countries.slice(indexOfFirstElement, indexOfLastElement);
+  const currentElements = countries.slice(
+    indexOfFirstElement,
+    indexOfLastElement
+  );
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -56,7 +71,11 @@ const Countries = () => {
             {currentElements.map((country) => (
               <TableRow key={country.code}>
                 <TableCell>
-                  <img src={country.flag} alt={`Flag of ${country.country}`} style={{ width: '30px', height: 'auto' }} />
+                  <img
+                    src={country.flag}
+                    alt={`Flag of ${country.country}`}
+                    style={{ width: "30px", height: "auto" }}
+                  />
                 </TableCell>
                 <TableCell>{country.country}</TableCell>
                 <TableCell>{country.code}</TableCell>
@@ -66,15 +85,22 @@ const Countries = () => {
         </Table>
       </TableContainer>
 
-
       <div>
         <IconButton>
-            <NavigateBeforeIcon onClick={() => handlePageChange(currentPage - 1)} style={{ cursor: 'pointer' }} disabled={currentPage === 1} />
+          <NavigateBeforeIcon
+            onClick={() => handlePageChange(currentPage - 1)}
+            style={{ cursor: "pointer" }}
+            disabled={currentPage === 1}
+          />
         </IconButton>
         <span>{currentPage}</span>
         <IconButton>
-        <NavigateNextIcon onClick={() => handlePageChange(currentPage + 1)} style={{ cursor: 'pointer' }} disabled={indexOfLastElement >= countries.length} />
-            </IconButton>
+          <NavigateNextIcon
+            onClick={() => handlePageChange(currentPage + 1)}
+            style={{ cursor: "pointer" }}
+            disabled={indexOfLastElement >= countries.length}
+          />
+        </IconButton>
       </div>
     </div>
   );

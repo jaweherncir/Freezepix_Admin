@@ -1,23 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import { Box, TextField, Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React, { useEffect, useState } from "react";
+import {
+  Box,
+  TextField,
+  Typography,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ProfilCard = () => {
   const isAuthenticated = useSelector((state) => !!state.auth.token);
   const navigate = useNavigate();
   const userId = useSelector((state) => state.auth.userId);
 
-
   const [userData, setUserData] = useState(() => {
-    try { 
-      const storedUserData = localStorage.getItem('userData');
+    try {
+      const storedUserData = localStorage.getItem("userData");
       return storedUserData ? JSON.parse(storedUserData) : null;
     } catch (error) {
-      console.error("Erreur lors de la lecture des données depuis le localStorage:", error);
+      console.error(
+        "Erreur lors de la lecture des données depuis le localStorage:",
+        error
+      );
       return null;
     }
   });
@@ -25,18 +36,23 @@ const ProfilCard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/admin/getOne/${userId}`);
+        const response = await axios.get(
+          `https://freezbackend-824bd046e21f.herokuapp.com/api/admin/getOne/${userId}`
+        );
         setUserData(response.data);
-        localStorage.setItem('userData', JSON.stringify(response.data));
+        localStorage.setItem("userData", JSON.stringify(response.data));
       } catch (error) {
-        console.error("Erreur lors de la récupération des données utilisateur :", error);
+        console.error(
+          "Erreur lors de la récupération des données utilisateur :",
+          error
+        );
       }
     };
 
     if (isAuthenticated) {
       fetchData();
     } else {
-      navigate('/Signin');
+      navigate("/Signin");
     }
   }, [isAuthenticated, navigate, userId]);
 
@@ -61,21 +77,27 @@ const ProfilCard = () => {
 
   const handlePasswordChange = async () => {
     try {
-      await axios.post(`http://localhost:5000/api/admin/updatePassword/${userId}`, {
-        password,
-        confirmPassword,
-      });
+      await axios.post(
+        `https://freezbackend-824bd046e21f.herokuapp.com/api/admin/updatePassword/${userId}`,
+        {
+          password,
+          confirmPassword,
+        }
+      );
 
-      toast.success('Mot de passe a été changé avec succès!', {
+      toast.success("Mot de passe a été changé avec succès!", {
         position: toast.POSITION.TOP_CENTER,
       });
 
       handleCloseDialog();
     } catch (error) {
       console.error("Erreur lors du changement de mot de passe :", error);
-      toast.error("Erreur lors du changement de mot de passe. Veuillez réessayer.", {
-        position: toast.POSITION.TOP_CENTER,
-      });
+      toast.error(
+        "Erreur lors du changement de mot de passe. Veuillez réessayer.",
+        {
+          position: toast.POSITION.TOP_CENTER,
+        }
+      );
     }
   };
 
@@ -89,7 +111,9 @@ const ProfilCard = () => {
       }}
     >
       <Typography variant="h5">Profil</Typography>
-      <Typography variant="subtitle1">Les informations peuvent être modifiées</Typography>
+      <Typography variant="subtitle1">
+        Les informations peuvent être modifiées
+      </Typography>
       <Box>
         <TextField
           label="Nom de famille"
@@ -97,7 +121,7 @@ const ProfilCard = () => {
           fullWidth
           margin="normal"
           variant="outlined"
-          disabled={!isAuthenticated} 
+          disabled={!isAuthenticated}
         />
         <TextField
           label="Téléphone"
@@ -118,7 +142,11 @@ const ProfilCard = () => {
       </Box>
 
       <Box>
-        <Button onClick={handleOpenDialog} variant="outlined" style={{ marginTop: '10px' }}>
+        <Button
+          onClick={handleOpenDialog}
+          variant="outlined"
+          style={{ marginTop: "10px" }}
+        >
           Modifier le mot de passe
         </Button>
       </Box>
@@ -148,7 +176,11 @@ const ProfilCard = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Annuler</Button>
-          <Button onClick={handlePasswordChange} variant="contained" color="primary">
+          <Button
+            onClick={handlePasswordChange}
+            variant="contained"
+            color="primary"
+          >
             Sauvegarder
           </Button>
         </DialogActions>

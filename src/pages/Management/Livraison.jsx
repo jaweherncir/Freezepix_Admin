@@ -6,22 +6,36 @@ import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import tn from "../../Assets/tn.png";
-import { Typography, CardContent, Dialog, DialogTitle, DialogContent, DialogActions, Button, Box } from "@mui/material";
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import {
+  Typography,
+  CardContent,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  Box,
+} from "@mui/material";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-import { StyledCard, StyledCardContainer, StyledButton, StyledContainer, StyledDiv , SpacedTextField } from "../../shared/StyledComponents"
-
+import {
+  StyledCard,
+  StyledCardContainer,
+  StyledButton,
+  StyledContainer,
+  StyledDiv,
+  SpacedTextField,
+} from "../../shared/StyledComponents";
 
 const Livraison = () => {
-
   const token = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
   useEffect(() => {
     if (!token) {
-      navigate('/Signin');
+      navigate("/Signin");
     }
-  }, [token, navigate]); 
+  }, [token, navigate]);
 
   const [livraisons, setLivraisons] = useState([]);
   const [editingLivraison, setEditingLivraison] = useState(null);
@@ -40,7 +54,7 @@ const Livraison = () => {
     const fetchData = async () => {
       try {
         const response = await Axios.get(
-          "http://localhost:5000/api/livraison/getAlllivraison"
+          "https://freezbackend-824bd046e21f.herokuapp.com/api/livraison/getAlllivraison"
         );
         setLivraisons(response.data.livraisons);
       } catch (error) {
@@ -57,7 +71,7 @@ const Livraison = () => {
   const confirmDelete = async () => {
     try {
       const response = await Axios.delete(
-        `http://localhost:5000/api/livraison/deletlivraison/${deleteConfirmationDialog}`
+        `https://freezbackend-824bd046e21f.herokuapp.com/api/livraison/deletlivraison/${deleteConfirmationDialog}`
       );
 
       if (response.data.success) {
@@ -91,7 +105,7 @@ const Livraison = () => {
   const handleSave = async () => {
     try {
       const response = await Axios.put(
-        `http://localhost:5000/api/livraison/updatelivraison/${editingLivraison._id}`,
+        `https://freezbackend-824bd046e21f.herokuapp.com/api/livraison/updatelivraison/${editingLivraison._id}`,
         {
           fraisTransport: editFraisTransport,
           currency: editCurrency,
@@ -130,10 +144,13 @@ const Livraison = () => {
 
   const handleAddLivraison = async () => {
     try {
-      await Axios.post("http://localhost:5000/api/livraison/addlivraison", {
-        fraisTransport: newFraisTransport,
-        currency: newCurrency,
-      });
+      await Axios.post(
+        "https://freezbackend-824bd046e21f.herokuapp.com/api/livraison/addlivraison",
+        {
+          fraisTransport: newFraisTransport,
+          currency: newCurrency,
+        }
+      );
       setAddDialogOpen(false);
     } catch (error) {
       console.error("Erreur lors de l'ajout de la livraison :", error.message);
@@ -144,7 +161,7 @@ const Livraison = () => {
     const fetchData = async () => {
       try {
         const response = await Axios.get(
-          "http://localhost:5000/api/livraison/getAlllivraison"
+          "https://freezbackend-824bd046e21f.herokuapp.com/api/livraison/getAlllivraison"
         );
         setLivraisons(response.data.livraisons);
       } catch (error) {
@@ -158,15 +175,14 @@ const Livraison = () => {
   return (
     <StyledContainer>
       <div>
-          <StyledButton
-            onClick={handleAddClick}
-            variant="contained"
-            type="submit"
-          >
-            Ajouter
-          </StyledButton>
+        <StyledButton
+          onClick={handleAddClick}
+          variant="contained"
+          type="submit"
+        >
+          Ajouter
+        </StyledButton>
       </div>
-
 
       <div>
         <StyledCardContainer>

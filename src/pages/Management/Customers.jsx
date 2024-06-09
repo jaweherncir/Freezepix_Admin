@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {Button, InputAdornment, IconButton } from "@mui/material";
+import { Button, InputAdornment, IconButton } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -7,17 +7,22 @@ import SearchIcon from "@mui/icons-material/Search";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { Container, StyledSearchTextField, DataGridContainer , StyledTextField } from "../../shared/StyledComponents"
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import {
+  Container,
+  StyledSearchTextField,
+  DataGridContainer,
+  StyledTextField,
+} from "../../shared/StyledComponents";
 const Customers = () => {
   const token = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
   useEffect(() => {
     if (!token) {
-      navigate('/Signin');
+      navigate("/Signin");
     }
-  }, [token, navigate]); 
+  }, [token, navigate]);
 
   const [searchText, setSearchText] = useState("");
   const [customers, setCustomers] = useState([]);
@@ -25,12 +30,16 @@ const Customers = () => {
 
   const handleDeleteCustomer = async (customerId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/users/${customerId}`);
+      await axios.delete(
+        `https://freezbackend-824bd046e21f.herokuapp.com/api/users/${customerId}`
+      );
       toast.success("client supprimé avec succès!", {
         position: toast.POSITION.TOP_CENTER,
       });
 
-      const response = await axios.get("http://localhost:5000/api/users/");
+      const response = await axios.get(
+        "https://freezbackend-824bd046e21f.herokuapp.com/api/users/"
+      );
       const customersWithIds = response.data.map((customer, index) => ({
         ...customer,
         id: index + 1,
@@ -50,7 +59,7 @@ const Customers = () => {
   const handleUpdateCustomer = async () => {
     try {
       await axios.put(
-        `http://localhost:5000/api/users/update/${selectedCustomer._id}`,
+        `https://freezbackend-824bd046e21f.herokuapp.com/api/users/update/${selectedCustomer._id}`,
         {
           name: selectedCustomer.name,
           email: selectedCustomer.email,
@@ -63,7 +72,9 @@ const Customers = () => {
         position: toast.POSITION.TOP_CENTER,
       });
 
-      const response = await axios.get("http://localhost:5000/api/users/");
+      const response = await axios.get(
+        "https://freezbackend-824bd046e21f.herokuapp.com/api/users/"
+      );
       const customersWithIds = response.data.map((customer, index) => ({
         ...customer,
         id: index + 1,
@@ -125,7 +136,9 @@ const Customers = () => {
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/users/");
+        const response = await axios.get(
+          "https://freezbackend-824bd046e21f.herokuapp.com/api/users/"
+        );
         const customersWithIds = response.data.map((customer, index) => ({
           ...customer,
           id: index + 1,
@@ -155,7 +168,7 @@ const Customers = () => {
       customer.name.toLowerCase().includes(searchText.toLowerCase()) ||
       customer.email.toLowerCase().includes(searchText.toLowerCase()) ||
       customer.role.toLowerCase().includes(searchText.toLowerCase()) ||
-    customer.adresse.toLowerCase().includes(searchText.toLowerCase())
+      customer.adresse.toLowerCase().includes(searchText.toLowerCase())
   );
 
   return (
@@ -179,93 +192,93 @@ const Customers = () => {
         }}
       />
 
-{selectedCustomer && (
-  <div>
-    <StyledTextField
-      label="Nouveau nom"
-      value={selectedCustomer.name}
-      onChange={(e) =>
-        setSelectedCustomer({ ...selectedCustomer, name: e.target.value })
-      }
-    />
-    <StyledTextField
-      label="Nouveau prénom"
-      value={selectedCustomer.lastName}
-      onChange={(e) =>
-        setSelectedCustomer({
-          ...selectedCustomer,
-          lastName: e.target.value,
-        })
-      }
-    />
-    <StyledTextField
-      label="Nouveau email"
-      value={selectedCustomer.email}
-      onChange={(e) =>
-        setSelectedCustomer({
-          ...selectedCustomer,  
-          email: e.target.value,
-        })
-      }
-    />
-    <StyledTextField
-      label="Nouveau téléphone"
-      value={selectedCustomer.phone}
-      onChange={(e) =>
-        setSelectedCustomer({
-          ...selectedCustomer,
-          phone: e.target.value,
-        })
-      }
-    />
-    <StyledTextField
-      label="Nouveau rôle"
-      value={selectedCustomer.role}
-      onChange={(e) =>
-        setSelectedCustomer({
-          ...selectedCustomer,
-          role: e.target.value,
-        })
-      }
-    />
-    <StyledTextField
-      label="Nouvelle adresse"
-      value={selectedCustomer.adresse}
-      onChange={(e) =>
-        setSelectedCustomer({
-          ...selectedCustomer,
-          adresse: e.target.value,
-        })
-      }
-    />
-    <StyledTextField
-      label="Nouvel âge"
-      value={selectedCustomer.age}
-      onChange={(e) =>
-        setSelectedCustomer({
-          ...selectedCustomer,
-          age: e.target.value,
-        })
-      }
-    />
-    <Button
-      style={{
-        margin: "1rem",
-      }}
-      onClick={handleUpdateCustomer}
-    >
-      Enregistrer
-    </Button>
-    <Button
-      style={{
-        margin: "1rem",
-      }}
-      onClick={() => setSelectedCustomer(null)}
-    >
-      Annuler
-    </Button>
-  </div>
-)}
+      {selectedCustomer && (
+        <div>
+          <StyledTextField
+            label="Nouveau nom"
+            value={selectedCustomer.name}
+            onChange={(e) =>
+              setSelectedCustomer({ ...selectedCustomer, name: e.target.value })
+            }
+          />
+          <StyledTextField
+            label="Nouveau prénom"
+            value={selectedCustomer.lastName}
+            onChange={(e) =>
+              setSelectedCustomer({
+                ...selectedCustomer,
+                lastName: e.target.value,
+              })
+            }
+          />
+          <StyledTextField
+            label="Nouveau email"
+            value={selectedCustomer.email}
+            onChange={(e) =>
+              setSelectedCustomer({
+                ...selectedCustomer,
+                email: e.target.value,
+              })
+            }
+          />
+          <StyledTextField
+            label="Nouveau téléphone"
+            value={selectedCustomer.phone}
+            onChange={(e) =>
+              setSelectedCustomer({
+                ...selectedCustomer,
+                phone: e.target.value,
+              })
+            }
+          />
+          <StyledTextField
+            label="Nouveau rôle"
+            value={selectedCustomer.role}
+            onChange={(e) =>
+              setSelectedCustomer({
+                ...selectedCustomer,
+                role: e.target.value,
+              })
+            }
+          />
+          <StyledTextField
+            label="Nouvelle adresse"
+            value={selectedCustomer.adresse}
+            onChange={(e) =>
+              setSelectedCustomer({
+                ...selectedCustomer,
+                adresse: e.target.value,
+              })
+            }
+          />
+          <StyledTextField
+            label="Nouvel âge"
+            value={selectedCustomer.age}
+            onChange={(e) =>
+              setSelectedCustomer({
+                ...selectedCustomer,
+                age: e.target.value,
+              })
+            }
+          />
+          <Button
+            style={{
+              margin: "1rem",
+            }}
+            onClick={handleUpdateCustomer}
+          >
+            Enregistrer
+          </Button>
+          <Button
+            style={{
+              margin: "1rem",
+            }}
+            onClick={() => setSelectedCustomer(null)}
+          >
+            Annuler
+          </Button>
+        </div>
+      )}
       <DataGridContainer>
         <DataGrid
           rows={filteredCustomers}
